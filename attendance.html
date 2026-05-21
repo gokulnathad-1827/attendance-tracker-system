@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Mark Attendance</h1>
+      <button onclick="home()">Home</button>|
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <section class="attendance-form">
+      <h2>Select Date and Class</h2>
+      <form id="attendanceForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="class">Class:</label>
+        <select id="class" name="class" required>
+          <option value="Technical English">Technical English</option>
+          <option value="Tamils and Technology">Tamils and Technology</option>
+          <option value="Web Technology">Web Technology</option>
+          <option value="DLC">DLC</option>
+          <option value="Graph Theory">Graph Theory</option>
+          <option value="Data Structure">Data structure</option>
+        </select>
+
+        <h3>Students</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gokulnath</td>
+              <td>
+                <select>
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Late">Late</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>Guna</td>
+              <td>
+                <select>
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Late">Late</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="submit">Submit Attendance</button>
+      </form>
+    </section>
+
+    <script>
+document
+  .getElementById("attendanceForm")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const attendanceData = [];
+
+    document.querySelectorAll("tbody tr").forEach((row) => {
+      const name = row.cells[0].innerText;
+      const status = row.querySelector("select").value;
+
+      attendanceData.push({
+        name,
+        status,
+      });
+    });
+
+    localStorage.setItem(
+      "attendance",
+      JSON.stringify(attendanceData)
+    );
+
+    alert("Attendance Saved Successfully!");
+  });
+  function home() {
+        alert("Returning to home...");
+        window.location.href = "home.html";
+      }
+
+      function logout() {
+        alert("Logging out...");
+        window.location.href = "index.html";
+      }
+</script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attendance Reports</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Generate Reports</h1>
+      <button onclick="home()">Home</button>|
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <section class="reports">
+      <h2>Attendance Report</h2>
+      <form>
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" name="start-date" />
+
+        <label for="end-date">End Date:</label>
+        <input type="date" id="end-date" name="end-date" />
+
+        <button type="submit">Generate Report</button>
+      </form>
+
+      <h3>Generated Report</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Attendance Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gokulnath</td>
+            <td>90%</td>
+          </tr>
+          <tr>
+            <td>Guna</td>
+            <td>85%</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <script>
+      function home() {
+        alert("Returning to home...");
+        window.location.href = "home.html";
+      }
+
+      function logout() {
+        alert("Logging out...");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>

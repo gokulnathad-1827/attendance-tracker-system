@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .add-form {
+        margin: 15px 0;
+        display: none;
+      }
+
+      .add-form input {
+        margin-right: 10px;
+      }
+
+      .add-form button {
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Manage Students</h1>
+      <button onclick="home()">Home</button>|
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <section class="student-management">
+      <h2>Student List</h2>
+      <button onclick="toggleAddForm()">Add New Student</button>
+      <button onclick="viewReport()">View Report</button>
+
+      <!-- Add Student Form -->
+      <div class="add-form" id="addForm">
+        <input
+          type="text"
+          id="studentName"
+          placeholder="Student Name"
+          required
+        />
+        <input type="text" id="studentId" placeholder="Student ID" required />
+        <button onclick="addStudent()">Add</button>
+      </div>
+
+      <!-- Student Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Student ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable">
+          <tr>
+            <td>Gokulnath</td>
+            <td>12345</td>
+            <td>
+              <button onclick="editStudent(this)">Edit</button>
+              <button onclick="deleteStudent(this)">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Guna</td>
+            <td>67890</td>
+            <td>
+              <button onclick="editStudent(this)">Edit</button>
+              <button onclick="deleteStudent(this)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <script>
+      function home() {
+        alert("Returning to home...");
+        window.location.href = "home.html";
+      }
+
+      function logout() {
+        alert("Logging out...");
+        window.location.href = "index.html";
+      }
+
+      function viewReport() {
+        alert("Redirecting to report page");
+        window.location.href = "report.html";
+      }
+
+      function toggleAddForm() {
+        const form = document.getElementById("addForm");
+        form.style.display = form.style.display === "none" ? "block" : "none";
+      }
+
+      function isDuplicate(name, id) {
+        const rows = document.querySelectorAll("#studentTable tr");
+        for (const row of rows) {
+          const existingName = row.cells[0].innerText.trim().toLowerCase();
+          const existingId = row.cells[1].innerText.trim();
+          if (existingName === name.toLowerCase() || existingId === id) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function addStudent() {
+        const name = document.getElementById("studentName").value.trim();
+        const id = document.getElementById("studentId").value.trim();
+
+        if (name === "" || id === "") {
+          alert("Please fill in both fields");
+          return;
+        }
+
+        if (isDuplicate(name, id)) {
+          alert("Student with this name or ID already exists!");
+          return;
+        }
+
+        const table = document.getElementById("studentTable");
+        const newRow = document.createElement("tr");
+
+        newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${id}</td>
+        <td>
+          <button onclick="editStudent(this)">Edit</button>
+          <button onclick="deleteStudent(this)">Delete</button>
+        </td>
+      `;
+
+        table.appendChild(newRow);
+
+        document.getElementById("studentName").value = "";
+        document.getElementById("studentId").value = "";
+        document.getElementById("addForm").style.display = "none";
+      }
+
+      function deleteStudent(button) {
+        const row = button.closest("tr");
+        const name = row.cells[0].innerText;
+        if (confirm(`Are you sure you want to delete ${name}?`)) {
+          row.remove();
+        }
+      }
+
+      function editStudent(button) {
+        const row = button.closest("tr");
+        const nameCell = row.cells[0];
+        const idCell = row.cells[1];
+
+        const currentName = nameCell.innerText;
+        const currentId = idCell.innerText;
+
+        const newName = prompt("Enter new name:", currentName)?.trim();
+        const newId = prompt("Enter new student ID:", currentId)?.trim();
+
+        if (newName && newId) {
+          // Check for duplicates excluding the current row
+          const rows = document.querySelectorAll("#studentTable tr");
+          for (const r of rows) {
+            if (r !== row) {
+              const existingName = r.cells[0].innerText.trim().toLowerCase();
+              const existingId = r.cells[1].innerText.trim();
+              if (
+                existingName === newName.toLowerCase() ||
+                existingId === newId
+              ) {
+                alert("Another student with this name or ID already exists!");
+                return;
+              }
+            }
+          }
+
+          nameCell.innerText = newName;
+          idCell.innerText = newId;
+        }
+      }
+    </script>
+  </body>
+</html>

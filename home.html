@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard - Attendance Tracker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar {
+        background-color: #4caf50;
+        padding: 10px;
+        text-align: center;
+        color: white;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 14px 20px;
+        margin: 0 10px;
+        font-size: 18px;
+        border-radius: 5px;
+      }
+
+      .navbar a:hover {
+        background-color: #45a049;
+      }
+
+      .dashboard-container {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 20px;
+      }
+
+      .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        margin: 10px;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      ul {
+        list-style-type: disc;
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="color: rgb(42, 21, 235); text-align: center">Select Subject</h1>
+
+    <div class="navbar">
+      <a href="attendance.html">Mark Attendance</a> |
+      <a href="report.html">Generate Report</a> |
+      <a href="students.html">Manage Students</a> |
+      <a href="index.html">Logout</a>
+    </div>
+
+    <div class="dashboard-container">
+      <div class="card">
+        <h3>Select Subjects</h3>
+        <form id="subjects-form">
+          <label><input type="checkbox" /> English</label><br />
+          <label><input type="checkbox" /> Tamil</label><br />
+          <label><input type="checkbox" /> Graph Theory</label><br />
+          <label><input type="checkbox" /> Web Technology</label><br />
+          <label><input type="checkbox" /> Data Structure</label><br />
+          <label><input type="checkbox" /> FODS</label><br />
+        </form>
+
+        <div>
+          <h4>Selected Subjects:</h4>
+          <ul id="selected-subjects"></ul>
+        </div>
+
+        <button id="start-attendance">Start Attendance</button>
+        <p id="error-message" style="color: red; display: none"></p>
+      </div>
+    </div>
+
+    <script>
+      function updateSelectedSubjects() {
+        const selectedSubjects = [];
+        const checkboxes = document.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        );
+        checkboxes.forEach((checkbox) => {
+          selectedSubjects.push(checkbox.parentNode.textContent.trim());
+        });
+
+        const subjectsList = document.getElementById("selected-subjects");
+        subjectsList.innerHTML = "";
+        selectedSubjects.forEach((subject) => {
+          const li = document.createElement("li");
+          li.textContent = subject;
+          subjectsList.appendChild(li);
+        });
+      }
+
+      document
+        .querySelectorAll('input[type="checkbox"]')
+        .forEach((checkbox) => {
+          checkbox.addEventListener("change", updateSelectedSubjects);
+        });
+
+      document
+        .getElementById("start-attendance")
+        .addEventListener("click", function () {
+          const selectedCheckboxes = document.querySelectorAll(
+            'input[type="checkbox"]:checked'
+          );
+          const errorMessage = document.getElementById("error-message");
+
+          if (selectedCheckboxes.length === 0) {
+            errorMessage.textContent = "You didn't select any subject.";
+            errorMessage.style.display = "block";
+          } else {
+            errorMessage.style.display = "none";
+
+            const selectedSubjects = [];
+            selectedCheckboxes.forEach((checkbox) => {
+              selectedSubjects.push(checkbox.parentNode.textContent.trim());
+            });
+
+            localStorage.setItem(
+              "selectedSubjects",
+              JSON.stringify(selectedSubjects)
+            );
+
+            window.location.href = "start.html";
+          }
+        });
+    </script>
+  </body>
+</html>
